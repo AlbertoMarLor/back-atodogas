@@ -2,6 +2,7 @@ const RestaurantModel = require("../../models/restaurant")
 const router = require('express').Router();
 
 
+/* GET ALL */
 router.get("/", async (req, res) => {
 
     try {
@@ -19,6 +20,8 @@ router.get("/", async (req, res) => {
         })
     }
 })
+
+/* GET ONE */
 
 router.get("/:id", async (req, res) => {
 
@@ -40,6 +43,7 @@ router.get("/:id", async (req, res) => {
     }
 })
 
+/* CREATE */
 
 router.post("/", async (req, res) => {
 
@@ -62,6 +66,7 @@ router.post("/", async (req, res) => {
 
 })
 
+/* EDIT */
 
 router.put('/:id', async (req, res) => {
 
@@ -71,6 +76,28 @@ router.put('/:id', async (req, res) => {
 
     try {
         const response = await RestaurantModel.findByIdAndUpdate(id, body, { new: true });
+        res.status(200).json({
+            status: "success",
+            data: response
+
+        })
+    } catch (error) {
+        res.status(500).json({
+            status: "error",
+            error: error.message
+        })
+    }
+
+})
+
+/* DELETE */
+
+router.delete('/:id', async (req, res) => {
+
+    const { id } = req.params;
+
+    try {
+        const response = await RestaurantModel.findByIdAndDelete(id);
         res.status(200).json({
             status: "success",
             data: response

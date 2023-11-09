@@ -8,9 +8,13 @@ const restaurantSchema = new mongoose.Schema({
     },
     img: {
         type: String,
+    },
+    type: {
+        type: String,
+        trim: true
     }
 });
 
-const RestaurantModel = mongoose.model("Restaurante", restaurantSchema)
+const RestaurantModel = mongoose.model("Restaurante", restaurantSchema, "restaurantes")
 
 module.exports = RestaurantModel
