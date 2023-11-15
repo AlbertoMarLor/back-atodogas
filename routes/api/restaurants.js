@@ -1,18 +1,36 @@
 const RestaurantModel = require("../../models/restaurant")
 const router = require('express').Router();
+const unorm = require('unorm');
 
 
 /* GET ALL */
-router.get("/", async (req, res) => {
+router.get("/:nombre?", async (req, res) => {
+
+    const { nombre } = req.params
 
     try {
-        const response = await RestaurantModel.find();
 
-        res.status(200).json({
-            status: "success",
-            data: response
+        if (!nombre) {
+            const response = await RestaurantModel.find().select({ menu: 0 });
 
-        })
+            res.status(200).json({
+                status: "success",
+                data: response
+
+            })
+        } else {
+            const restaurant = unorm.nfd(nombre).replace(/[\u0300-\u036f]/g, '');
+            const response = await RestaurantModel.find({ nombre: new RegExp(restaurant, 'i') }).select({ menu: 0 });
+
+            res.status(200).json({
+                status: "success",
+                data: response
+
+            })
+        }
+
+
+
     } catch (error) {
         res.status(500).json({
             status: "error",
@@ -23,7 +41,7 @@ router.get("/", async (req, res) => {
 
 /* GET ONE */
 
-router.get("/:id", async (req, res) => {
+router.get("/one/:id", async (req, res) => {
 
     const { id } = req.params
 
@@ -42,6 +60,7 @@ router.get("/:id", async (req, res) => {
         })
     }
 })
+
 
 /* CREATE */
 
