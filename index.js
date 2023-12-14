@@ -1,16 +1,15 @@
 const mongoose = require("mongoose");
 const express = require("express");
 const cors = require('cors');
+require('dotenv').config();
+
 
 
 const app = express();
 
 const PORT = 3000
 
-const dbUrl = "mongodb+srv://andrea:darling@prueba.pyn8oyp.mongodb.net/atodogas?retryWrites=true&w=majority"
-
-
-mongoose.connect(dbUrl).then(() => {
+mongoose.connect(process.env.DB_KEY).then(() => {
     console.info("Connected to the DB");
 })
     .catch((e) => {
